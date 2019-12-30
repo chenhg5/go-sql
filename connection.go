@@ -82,3 +82,14 @@ type Database struct {
 	MaxIdleCon int
 	MaxOpenCon int
 }
+
+type Databases map[string]Database
+
+func (d Databases) Add(key string, db Database) Databases {
+	d[key] = db
+	return d
+}
+
+func DefaultDatabases(database Database) Databases {
+	return Databases{"default": database}
+}
