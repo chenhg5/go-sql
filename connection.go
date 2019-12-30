@@ -71,6 +71,22 @@ func GetConnectionByDriver(driver string) Connection {
 	}
 }
 
+func MysqlConnection() Connection {
+	return GetMysqlDB()
+}
+
+func MssqlConnection() Connection {
+	return GetMssqlDB()
+}
+
+func SqliteConnection() Connection {
+	return GetSqliteDB()
+}
+
+func PostgresqlConnection() Connection {
+	return GetPostgresqlDB()
+}
+
 type Database struct {
 	Dsn        string
 	User       string
