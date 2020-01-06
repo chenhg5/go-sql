@@ -17,6 +17,15 @@ const (
 
 // Connection is a connection handler of database.
 type Connection interface {
+	// InitDB initialize the database connections.
+	InitDB(cfg map[string]Database) Connection
+
+	// Name get the connection`s name.
+	Name() string
+
+	// GetDelimiter get the default delimiter.
+	GetDelimiter() string
+
 	// Query is the query method of sql.
 	Query(query string, args ...interface{}) ([]map[string]interface{}, error)
 
@@ -28,6 +37,9 @@ type Connection interface {
 
 	// ExecWithConnection is the exec method with given connection of sql.
 	ExecWithConnection(conn, query string, args ...interface{}) (sql.Result, error)
+
+	// Transaction API
+	// ===================================
 
 	QueryWithTx(tx *sql.Tx, query string, args ...interface{}) ([]map[string]interface{}, error)
 
@@ -44,27 +56,18 @@ type Connection interface {
 	BeginTxWithRepeatableReadAndConnection(conn string) *sql.Tx
 	BeginTxAndConnection(conn string) *sql.Tx
 	BeginTxWithLevelAndConnection(conn string, level sql.IsolationLevel) *sql.Tx
-
-	// InitDB initialize the database connections.
-	InitDB(cfg map[string]Database) Connection
-
-	// GetName get the connection name.
-	Name() string
-
-	// GetDelimiter get the default delimiter.
-	GetDelimiter() string
 }
 
 // GetConnectionByDriver return the Connection by given driver name.
 func GetConnectionByDriver(driver string) Connection {
 	switch driver {
-	case "mysql":
+	case DriverMysql:
 		return GetMysqlDB()
-	case "mssql":
+	case DriverMssql:
 		return GetMssqlDB()
-	case "sqlite":
+	case DriverSqlite:
 		return GetSqliteDB()
-	case "postgresql":
+	case DriverPostgresql:
 		return GetPostgresqlDB()
 	default:
 		panic("driver not found!")

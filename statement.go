@@ -132,6 +132,20 @@ func (sql *SQL) OrderBy(fields ...string) *SQL {
 	return sql
 }
 
+func (sql *SQL) GroupBy(fields ...string) *SQL {
+	if len(fields) == 0 {
+		panic("wrong group by field")
+	}
+	for i := 0; i < len(fields); i++ {
+		if i == len(fields)-2 {
+			sql.Group += " " + sql.wrap(fields[i]) + " " + fields[i+1]
+			return sql
+		}
+		sql.Group += " " + sql.wrap(fields[i]) + " and "
+	}
+	return sql
+}
+
 // Skip set offset value.
 func (sql *SQL) Skip(offset int) *SQL {
 	sql.Offset = strconv.Itoa(offset)

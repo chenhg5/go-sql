@@ -67,6 +67,7 @@ type SQLComponent struct {
 	Leftjoins  []Join
 	Args       []interface{}
 	Order      string
+	Group      string
 	Offset     string
 	Limit      string
 	WhereRaws  string
@@ -119,6 +120,13 @@ func (sql *SQLComponent) getOrderBy() string {
 		return ""
 	}
 	return " order by " + sql.Order + " "
+}
+
+func (sql *SQLComponent) getGroupBy() string {
+	if sql.Group == "" {
+		return ""
+	}
+	return " group by " + sql.Group + " "
 }
 
 func (sql *SQLComponent) getJoins(delimiter string) string {
