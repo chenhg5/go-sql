@@ -4,7 +4,7 @@ import (
 	dbsql "database/sql"
 	"errors"
 	"fmt"
-	"git.coding.net/cg33/connection.git/dialect"
+	"github.com/chenhg5/go-sql/dialect"
 	"regexp"
 	"strconv"
 	"strings"

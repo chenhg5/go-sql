@@ -1,3 +1,3 @@
-module git.coding.net/cg33/connection.git
+module github.com/chenhg5/go-sql
 
 go 1.13
