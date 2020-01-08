@@ -59,8 +59,20 @@ func (db *Postgresql) InitDB(cfgList map[string]Database) Connection {
 		for conn, cfg := range cfgList {
 
 			if cfg.Dsn == "" {
-				cfg.Dsn = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-					cfg.Host, cfg.Port, cfg.User, cfg.Pwd, cfg.Name)
+
+				params := ""
+				_, hasSSLmode := cfg.Params["charset"]
+				for k, v := range cfg.Params {
+					params += k + "=" + v + " "
+				}
+				if !hasSSLmode {
+					params += "sslmode=disable"
+				} else {
+					params = params[:len(params)-1]
+				}
+
+				cfg.Dsn = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s ",
+					cfg.Host, cfg.Port, cfg.User, cfg.Pwd, cfg.Name) + params
 			}
 
 			sqlDB, err := sql.Open("postgres", cfg.Dsn)

@@ -53,7 +53,13 @@ func (db *Mssql) InitDB(cfglist map[string]Database) Connection {
 					User:   url.UserPassword(cfg.User, cfg.Pwd),
 					Host:   fmt.Sprintf("%s:%s", cfg.Host, cfg.Port),
 				}
-				cfg.Dsn = u.String()
+
+				params := ""
+				for k, v := range cfg.Params {
+					params += k + "=" + v + "&"
+				}
+
+				cfg.Dsn = u.String() + "?" + params[:len(params)-1]
 			}
 
 			sqlDB, err := sql.Open("mssql", cfg.Dsn)

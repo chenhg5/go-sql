@@ -98,9 +98,12 @@ type Database struct {
 	Port       string
 	Name       string
 	File       string
+	Params     Params
 	MaxIdleCon int
 	MaxOpenCon int
 }
+
+type Params map[string]string
 
 type Databases map[string]Database
 

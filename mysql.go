@@ -31,7 +31,19 @@ func (db *Mysql) InitDB(cfgs map[string]Database) Connection {
 		for conn, cfg := range cfgs {
 
 			if cfg.Dsn == "" {
-				cfg.Dsn = cfg.User + ":" + cfg.Pwd + "@tcp(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Name + "?charset=utf8mb4"
+
+				params := ""
+				_, hasCharset := cfg.Params["charset"]
+				for k, v := range cfg.Params {
+					params += k + "=" + v + "&"
+				}
+				if !hasCharset {
+					params += "charset=utf8mb4"
+				} else {
+					params = params[:len(params)-1]
+				}
+
+				cfg.Dsn = cfg.User + ":" + cfg.Pwd + "@tcp(" + cfg.Host + ":" + cfg.Port + ")/" + cfg.Name + "?" + params
 			}
 
 			sqlDB, err := sql.Open("mysql", cfg.Dsn)
