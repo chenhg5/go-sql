@@ -10,6 +10,7 @@ import (
 
 // Postgresql is a Connection of mssql.
 type Postgresql struct {
+	*Base
 	DbList map[string]*sql.DB
 	Once   sync.Once
 }
@@ -18,17 +19,8 @@ type Postgresql struct {
 func GetPostgresqlDB() *Postgresql {
 	return &Postgresql{
 		DbList: map[string]*sql.DB{},
+		Base:   &Base{DriverName: DriverPostgresql, Delimiter: `"`,},
 	}
-}
-
-// Name implements the method Connection.Name.
-func (db *Postgresql) Name() string {
-	return "postgresql"
-}
-
-// GetDelimiter implements the method Connection.GetDelimiter.
-func (db *Postgresql) GetDelimiter() string {
-	return `"`
 }
 
 // QueryWithConnection implements the method Connection.QueryWithConnection.

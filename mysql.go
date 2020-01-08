@@ -12,6 +12,7 @@ type SQLTx struct {
 
 // Mysql is a Connection of mssql.
 type Mysql struct {
+	*Base
 	DbList map[string]*sql.DB
 	Once   sync.Once
 }
@@ -20,17 +21,8 @@ type Mysql struct {
 func GetMysqlDB() *Mysql {
 	return &Mysql{
 		DbList: map[string]*sql.DB{},
+		Base:   &Base{DriverName: DriverMysql, Delimiter: "`",},
 	}
-}
-
-// GetDelimiter implements the method Connection.GetDelimiter.
-func (db *Mysql) GetDelimiter() string {
-	return "`"
-}
-
-// Name implements the method Connection.Name.
-func (db *Mysql) Name() string {
-	return "mysql"
 }
 
 // InitDB implements the method Connection.InitDB.

@@ -9,6 +9,7 @@ import (
 
 // Mssql is a Connection of mssql.
 type Mssql struct {
+	*Base
 	DbList map[string]*sql.DB
 	Once   sync.Once
 }
@@ -17,17 +18,8 @@ type Mssql struct {
 func GetMssqlDB() *Mssql {
 	return &Mssql{
 		DbList: map[string]*sql.DB{},
+		Base:   &Base{DriverName: DriverMssql, Delimiter: "`",},
 	}
-}
-
-// GetDelimiter implements the method Connection.GetDelimiter.
-func (db *Mssql) GetDelimiter() string {
-	return "`"
-}
-
-// Name implements the method Connection.Name.
-func (db *Mssql) Name() string {
-	return "mssql"
 }
 
 // QueryWithConnection implements the method Connection.QueryWithConnection.

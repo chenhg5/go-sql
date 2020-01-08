@@ -7,6 +7,7 @@ import (
 
 // Sqlite is a Connection of mssql.
 type Sqlite struct {
+	*Base
 	DbList map[string]*sql.DB
 	Once   sync.Once
 }
@@ -20,17 +21,8 @@ var DB = Sqlite{
 func GetSqliteDB() *Sqlite {
 	return &Sqlite{
 		DbList: map[string]*sql.DB{},
+		Base:   &Base{DriverName: DriverSqlite, Delimiter: "`",},
 	}
-}
-
-// Name implements the method Connection.Name.
-func (db *Sqlite) Name() string {
-	return "sqlite"
-}
-
-// GetDelimiter implements the method Connection.GetDelimiter.
-func (db *Sqlite) GetDelimiter() string {
-	return "`"
 }
 
 // QueryWithConnection implements the method Connection.QueryWithConnection.
