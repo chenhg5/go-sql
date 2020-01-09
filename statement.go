@@ -140,6 +140,7 @@ func (sql *SQL) OrderByRaw(order string) *SQL {
 	return sql
 }
 
+// GroupBy set group by fields.
 func (sql *SQL) GroupBy(fields ...string) *SQL {
 	if len(fields) == 0 {
 		panic("wrong group by field")
@@ -150,6 +151,14 @@ func (sql *SQL) GroupBy(fields ...string) *SQL {
 			return sql
 		}
 		sql.Group += " " + sql.wrap(fields[i]) + " and "
+	}
+	return sql
+}
+
+// GroupByRaw set group by.
+func (sql *SQL) GroupByRaw(group string) *SQL {
+	if group != "" {
+		sql.Group += " " + group
 	}
 	return sql
 }
